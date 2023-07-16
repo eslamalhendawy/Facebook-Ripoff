@@ -20,13 +20,18 @@ function Profile() {
   });
 
   useEffect(() => {
+    const request = axios.CancelToken.source();
+
     async function fetchData() {
       await axios
-        .post(`profile/${username}`, { token: appState.user.token })
+        .post(`profile/${username}`, { token: appState.user.token }, {cancelToken: request.token})
         .then((res) => setProfileData(res.data))
         .catch((e) => console.log(e));
     }
     fetchData();
+    return () => {
+      request.cancel();
+    }
   }, []);
 
   return (
