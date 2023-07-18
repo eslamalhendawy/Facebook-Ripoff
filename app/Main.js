@@ -19,6 +19,8 @@ import ViewSinglePost from "./components/ViewSinglePost";
 import CreatePost from "./components/CreatePost";
 import FlashMessages from "./components/FlashMessages";
 import Profile from "./components/Profile";
+import EditPost from "./components/EditPost";
+import NotFound from "./components/NotFound";
 
 const Main = () => {
   const initialState = {
@@ -71,7 +73,9 @@ const Main = () => {
             <Route path="/about" exact element={<About />} />
             <Route path="/create-post" exact element={<CreatePost />} />
             <Route path="/post/:id" exact element={<ViewSinglePost />} />
+            <Route path="/post/:id/edit" exact element={<EditPost />} />
             <Route path="/profile/:username" exact element={<Profile />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </BrowserRouter>
