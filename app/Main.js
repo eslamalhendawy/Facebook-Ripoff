@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { useImmerReducer } from "use-immer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import axios from "axios";
+import { CSSTransition } from "react-transition-group";
 axios.defaults.baseURL = "http://localhost:8080";
 
 //Contexts
@@ -21,6 +22,7 @@ import FlashMessages from "./components/FlashMessages";
 import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
+import Search from "./components/Search";
 
 const Main = () => {
   const initialState = {
@@ -31,6 +33,7 @@ const Main = () => {
       username: localStorage.getItem("complexappUsername"),
       avatar: localStorage.getItem("complexappAvatar"),
     },
+    isSearchOpen: false,
   };
 
   function ourReducer(draft, action) {
@@ -44,6 +47,12 @@ const Main = () => {
         break;
       case "flashMessage":
         draft.flashMessages.push(action.value);
+        break;
+      case "openSearch":
+        draft.isSearchOpen = true;
+        break;
+      case "closeSearch":
+        draft.isSearchOpen = false;
         break;
     }
   }
@@ -74,9 +83,13 @@ const Main = () => {
             <Route path="/create-post" exact element={<CreatePost />} />
             <Route path="/post/:id" exact element={<ViewSinglePost />} />
             <Route path="/post/:id/edit" exact element={<EditPost />} />
-            <Route path="/profile/:username" exact element={<Profile />} />
+            <Route path="/profile/:username/*" exact element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          {/* {state.isSearchOpen && <Search />} */}
+          <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
+            <Search />
+          </CSSTransition>
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

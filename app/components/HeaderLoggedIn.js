@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
 
@@ -13,21 +14,29 @@ function HeaderLoggedIn() {
     navigate("/");
   };
 
+  const showSearch = (e) => {
+    e.preventDefault();
+    appDispatch({ type: "openSearch" });
+  };
+
   return (
     <div className="flex-row my-3 my-md-0">
-      <a href="#" className="text-white mr-2 header-search-icon">
+      <a onClick={showSearch} href="#" className="text-white mr-2 header-search-icon" data-tooltip-place="bottom" data-tooltip-content="Search" data-tooltip-id="search">
         <i className="fas fa-search"></i>
       </a>
-      <span className="mr-2 header-chat-icon text-white">
+      <Tooltip id="search" />{" "}
+      <span className="mr-2 header-chat-icon text-white" data-tooltip-place="bottom" data-tooltip-content="Chat" data-tooltip-id="chat">
         <i className="fas fa-comment"></i>
         <span className="chat-count-badge text-white"> </span>
       </span>
-      <Link to={`/profile/${appState.user.username}`} className="mr-2">
+      <Tooltip id="chat" />{" "}
+      <Link to={`/profile/${appState.user.username}`} className="mr-2" data-tooltip-place="bottom" data-tooltip-content="Profile" data-tooltip-id="profile">
         <img className="small-header-avatar" src={appState.user.avatar} />
       </Link>
+      <Tooltip id="profile" />{" "}
       <Link className="btn btn-sm btn-success mr-2" to="/create-post">
         Create Post
-      </Link>
+      </Link>{" "}
       <button className="btn btn-sm btn-secondary" onClick={handleLogOut}>
         Sign Out
       </button>

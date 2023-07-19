@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import LoadingDotsIcon from "./LoadingDotsIcon";
 
-function ProfilePosts() {
+function Following() {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const { username } = useParams();
@@ -13,7 +13,7 @@ function ProfilePosts() {
 
     async function getPosts() {
       await axios
-        .get(`profile/${username}/posts`, { cancelToken: request.token })
+        .get(`profile/${username}/following`, { cancelToken: request.token })
         .then((res) => {
           setPosts(res.data);
           setIsLoading(false);
@@ -30,13 +30,10 @@ function ProfilePosts() {
 
   return (
     <div className="list-group">
-      {posts.map((post) => {
-        const date = new Date(post.createdDate);
-        const formatedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      {posts.map((following, index) => {
         return (
-          <Link to={`/post/${post._id}`} className="list-group-item list-group-item-action" key={post._id}>
-            <img className="avatar-tiny" src={post.author.avatar} /> <strong>{post.title}</strong>
-            <span className="text-muted small"> on {formatedDate}</span>
+          <Link to={`/profile/${following.username}`} className="list-group-item list-group-item-action" key={index}>
+            <img className="avatar-tiny" src={following.avatar} /> {following.username}
           </Link>
         );
       })}
@@ -44,4 +41,4 @@ function ProfilePosts() {
   );
 }
 
-export default ProfilePosts;
+export default Following;
