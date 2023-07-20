@@ -25,9 +25,11 @@ function HeaderLoggedIn() {
         <i className="fas fa-search"></i>
       </a>
       <Tooltip id="search" />{" "}
-      <span className="mr-2 header-chat-icon text-white" data-tooltip-place="bottom" data-tooltip-content="Chat" data-tooltip-id="chat">
+      <span onClick={() => appDispatch({type: "toggleChat"})} className={"mr-2 header-chat-icon " + (appState.unreadCount > 0 ? "text-danger" : "text-white")} data-tooltip-place="bottom" data-tooltip-content="Chat" data-tooltip-id="chat">
         <i className="fas fa-comment"></i>
-        <span className="chat-count-badge text-white"> </span>
+        {appState.unreadCount > 0 ? (
+          <span className="chat-count-badge text-white">{appState.unreadCount > 9 ? "9+" : appState.unreadCount}</span>
+        ): <></>}
       </span>
       <Tooltip id="chat" />{" "}
       <Link to={`/profile/${appState.user.username}`} className="mr-2" data-tooltip-place="bottom" data-tooltip-content="Profile" data-tooltip-id="profile">

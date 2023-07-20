@@ -23,6 +23,7 @@ import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
 import Search from "./components/Search";
+import Chat from "./components/Chat";
 
 const Main = () => {
   const initialState = {
@@ -34,6 +35,8 @@ const Main = () => {
       avatar: localStorage.getItem("complexappAvatar"),
     },
     isSearchOpen: false,
+    isChatOpen: false,
+    unreadCount: 0,
   };
 
   function ourReducer(draft, action) {
@@ -53,6 +56,18 @@ const Main = () => {
         break;
       case "closeSearch":
         draft.isSearchOpen = false;
+        break;
+      case "toggleChat":
+        draft.isChatOpen = !draft.isChatOpen;
+        break;
+      case "closeChat":
+        draft.isChatOpen = false;
+        break;
+      case "increaseUnreadCount":
+        draft.unreadCount++;
+        break;
+      case "resetUnreadCount":
+        draft.unreadCount = 0;
         break;
     }
   }
@@ -90,6 +105,7 @@ const Main = () => {
           <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
             <Search />
           </CSSTransition>
+          <Chat />
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>
