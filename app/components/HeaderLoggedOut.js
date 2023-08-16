@@ -8,18 +8,20 @@ function HeaderLoggedOut() {
   const appDispatch = useContext(DispatchContext);
   async function submitHandler(e) {
     e.preventDefault();
-    try {
-      const response = await axios.post("/login", { username, password });
-      if (response.data) {
-        appDispatch({type: "login", data: response.data})
-      } else {
-        console.log("Incorrect Username / Password");
-      }
-      setUsername("");
-      setPassword("");
-    } catch (e) {
-      console.log(e.response.data);
-    }
+    await axios
+      .post("/login", { username, password })
+      .then((response) => {
+        if (response.data) {
+          appDispatch({ type: "login", data: response.data });
+          appDispatch({ type: "flashMessage", value: "Login Successful" });
+          setUsername("");
+          setPassword("");
+        } else {
+          console.log("Incorrect Username / Password");
+          appDispatch({ type: "flashMessage", value: "Incorrect Username / Password" });
+        }
+      })
+      .catch((e) => console.log(e));
   }
   return (
     <form onSubmit={submitHandler} className="mb-0 pt-2 pt-md-0">

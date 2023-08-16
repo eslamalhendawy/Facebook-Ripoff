@@ -85,6 +85,26 @@ const Main = () => {
       localStorage.removeItem("complexappAvatar");
     }
   }, [state.loggedIn]);
+
+
+  useEffect(() => {
+    if (state.loggedIn) {
+      async function fetchResults() {
+        await axios
+          .post("/checkToken", { token: state.user.token })
+          .then((res) =>{
+            if(!res.data){
+              dispatch({type: "logout"});
+              dispatch({type: "flashMessage", value: "Session Expired, Please Login Again."});
+            }
+          }
+          )
+          .catch((e) => console.log(e));
+      }
+      fetchResults();
+    }
+  }, []);
+
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>

@@ -11,6 +11,7 @@ function HeaderLoggedIn() {
 
   const handleLogOut = () => {
     appDispatch({ type: "logout" });
+    appDispatch({ type: "flashMessage", value: "Loged Out Successfully" });
     navigate("/");
   };
 
